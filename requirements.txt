@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+streamlit
+pydantic
+pydantic-settings
+pymupdf
+langchain
+langchain-openai
+langchain-community
+sentence-transformers
+faiss-cpu
+python-dotenv
+tiktoken
+pandas
+numpy
