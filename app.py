@@ -9,6 +9,9 @@ from utils.styles import apply_custom_styles
 
 load_dotenv()
 
+# Streamlit App Config
+st.set_page_config(page_title="Medical Report Hub", layout="wide", page_icon="🩺")
+
 # Initialize session state variables
 if "pipeline" not in st.session_state:
     st.session_state.pipeline = MedicalRAGPipeline()
@@ -20,9 +23,6 @@ if "current_glossary" not in st.session_state:
     st.session_state.current_glossary = ""
 
 pipeline = st.session_state.pipeline
-
-# Streamlit App Config
-st.set_page_config(page_title="Medical Report Hub", layout="wide", page_icon="🩺")
 
 # Apply Professional CSS Styles
 apply_custom_styles()

@@ -1,7 +1,7 @@
 from langchain_community.vectorstores import FAISS
 import os
 
-def create_vector_store(chunks: list[str], embeddings, save_path: str = "medical-rag/data/faiss_index"):
+def create_vector_store(chunks: list[str], embeddings, save_path: str = "data/faiss_index"):
     """
     Create a FAISS vector store from text chunks.
     """
@@ -11,7 +11,7 @@ def create_vector_store(chunks: list[str], embeddings, save_path: str = "medical
     vector_store.save_local(save_path)
     return vector_store
 
-def load_vector_store(embeddings, save_path: str = "medical-rag/data/faiss_index"):
+def load_vector_store(embeddings, save_path: str = "data/faiss_index"):
     """
     Load a FAISS vector store from local storage.
     """
