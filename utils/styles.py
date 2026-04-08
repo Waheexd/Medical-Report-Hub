@@ -3,7 +3,7 @@ import streamlit as st
 def apply_custom_styles():
     """
     Inject custom CSS for a professional medical-grade UI.
-    Fixed to the "Medical Light" theme.
+    Fixed to the "Medical Light" theme with high-contrast chat bubbles.
     """
     # Theme Palette (Medical Light)
     bg_main = "#ffffff"          # White
@@ -14,7 +14,7 @@ def apply_custom_styles():
     text_secondary = "#64748b"   # Muted Slate
     metric_val = "#2563eb"       # Medical Blue
     chat_user = "#eff6ff"        # Light Blue
-    chat_bot = "#f8fafc"         # Light Gray
+    chat_bot = "#f1f5f9"         # Light Gray (slightly more distinct)
     tab_bg = "#f8fafc"
     tab_active = "#ffffff"
 
@@ -38,23 +38,23 @@ def apply_custom_styles():
         .main .block-container {{
             padding-top: 2rem;
             padding-bottom: 5rem;
-            background-color: var(--bg-main);
+            background-color: var(--bg-main) !important;
         }}
 
         /* Metric Card Styling */
         [data-testid="stMetricValue"] {{
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--metric-val);
+            color: var(--metric-val) !important;
         }}
         
         [data-testid="stMetricLabel"] {{
             font-size: 1rem;
-            color: var(--text-secondary);
+            color: var(--text-secondary) !important;
             font-weight: 500;
         }}
 
-        /* Custom Card Container (Results) */
+        /* Custom Card Container (Results / Expanders) */
         [data-testid="stExpander"] {{
             border: 1px solid var(--border-col) !important;
             border-radius: 12px !important;
@@ -90,15 +90,15 @@ def apply_custom_styles():
             font-weight: 600 !important;
         }}
 
-        /* Chat UI Refinements */
+        /* --- AGGRESSIVE CHAT UI REFINEMENTS --- */
         .stChatMessage {{
             border-radius: 15px !important;
             border: 1px solid var(--border-col) !important;
             margin-bottom: 1.5rem !important;
             padding: 1.2rem !important;
-            background-color: var(--bg-card) !important;
         }}
 
+        /* Force backgrounds for AI and User bubbles */
         [data-testid="stChatMessage"]:nth-child(even) {{
             background-color: var(--chat-bot) !important; 
         }}
@@ -108,8 +108,28 @@ def apply_custom_styles():
             border-left: 4px solid var(--metric-val) !important;
         }}
 
-        /* Text colors inside chat */
-        .stChatMessage p, .stChatMessage span, .stChatMessage div {{
+        /* FORCE TEXT CONTRAST IN CHAT */
+        .stChatMessage p, 
+        .stChatMessage span, 
+        .stChatMessage div, 
+        .stChatMessage li, 
+        .stChatMessage code {{
+            color: var(--text-primary) !important;
+        }}
+
+        .stChatMessage h1, 
+        .stChatMessage h2, 
+        .stChatMessage h3 {{
+            color: var(--metric-val) !important;
+        }}
+
+        /* Target expanders and nested cards INSIDE chat bubbles */
+        .stChatMessage [data-testid="stExpander"] {{
+            background-color: var(--bg-main) !important;
+            border: 1px solid var(--border-col) !important;
+        }}
+        
+        .stChatMessage [data-testid="stExpander"] * {{
             color: var(--text-primary) !important;
         }}
 
@@ -162,7 +182,7 @@ def apply_custom_styles():
             background-color: var(--bg-card);
         }}
 
-        /* Metric values division color */
+        /* Specifically target metric values division */
         [data-testid="stMetricValue"] > div {{
             color: var(--metric-val) !important;
         }}
