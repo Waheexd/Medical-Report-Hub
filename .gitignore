@@ -152,7 +152,9 @@ cython_debug/
 .vscode/
 
 # Project Specific
-data/
+data/*
+!data/.gitkeep
+scratch/
 outputs/
 *.pdf
 Rag_Storage/

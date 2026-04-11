@@ -21,6 +21,21 @@ def get_llm(model_name: str = "llama-3.3-70b-versatile"):
     )
     return llm
 
+def get_vision_llm(model_name: str = "meta-llama/llama-4-scout-17b-16e-instruct"):
+    """
+    Initialize and return the Vision LLM using Groq.
+    """
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        raise ValueError("GROQ_API_KEY not found in environment.")
+        
+    llm = ChatGroq(
+        model=model_name,
+        temperature=0.0,
+        api_key=api_key
+    )
+    return llm
+
 def generate_medical_prompt_template(language: str = "English"):
     """
     Create the prompt template for the medical assistant.

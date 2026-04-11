@@ -4,6 +4,7 @@ from rag.vector_store import create_vector_store, load_vector_store
 from rag.retriever import retrieve_documents
 from rag.llm import get_llm, generate_medical_prompt_template
 from utils.pdf_parser import extract_text_from_pdf, clean_text
+from utils.image_parser import extract_text_from_image
 from utils.chunking import smart_chunking, extract_values_from_chunks
 from utils.normal_ranges import NORMAL_RANGES, check_value
 
@@ -18,8 +19,15 @@ class MedicalRAGPipeline:
         """
         Process a new PDF report: extract, chunk, store, and analyze.
         """
-        # 1. Extract Text
-        raw_text = extract_text_from_pdf(pdf_path)
+        # 1. Extract Text based on file type
+        ext = pdf_path.split('.')[-1].lower()
+        if ext == 'pdf':
+            raw_text = extract_text_from_pdf(pdf_path)
+        elif ext in ['png', 'jpg', 'jpeg']:
+            raw_text = extract_text_from_image(pdf_path)
+        else:
+            raise ValueError(f"Unsupported file format: {ext}")
+            
         clean_ext_text = clean_text(raw_text)
         
         # 2. Smart Chunking

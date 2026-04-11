@@ -9,6 +9,18 @@ from utils.styles import apply_custom_styles
 
 load_dotenv()
 
+def sanitize_filename(name: str, max_length: int = 50) -> str:
+    """Sanitize and truncate filename to avoid path length issues."""
+    import re
+    # Remove extension
+    base, ext = os.path.splitext(name)
+    # Sanitize characters
+    base = re.sub(r"[^\w\-_\.]", "_", base)
+    # Truncate
+    if len(base) > max_length:
+        base = base[:max_length]
+    return f"{base}{ext}"
+
 # Streamlit App Config
 st.set_page_config(page_title="Medical Report Hub", layout="wide", page_icon="🩺")
 
@@ -29,19 +41,20 @@ apply_custom_styles()
 
 # Header Section
 st.title("🩺 Medical Report Hub")
-st.caption("Advanced AI Analysis for Laboratory Reports • Powered by Groq Llama-3")
+st.caption("Advanced AI Analysis for Laboratory Reports • Powered by Groq Llama-3 (Text & Vision)")
 
 # 1. Top Control Bar (Unified Header)
 with st.container():
     c1, c2, c3, c4 = st.columns([2, 1, 1, 1])
     with c1:
-        uploaded_file = st.file_uploader("Upload Lab Report (PDF)", type="pdf", label_visibility="collapsed")
+        uploaded_file = st.file_uploader("Upload Lab Report (PDF/Image)", type=["pdf", "png", "jpg", "jpeg"], label_visibility="collapsed")
     with c2:
         if uploaded_file is not None:
             if st.button("🚀 Analyze Report", use_container_width=True, type="primary"):
                 with st.spinner("Processing..."):
                     os.makedirs("data", exist_ok=True)
-                    temp_path = f"data/{uploaded_file.name}"
+                    safe_name = sanitize_filename(uploaded_file.name)
+                    temp_path = os.path.join("data", safe_name)
                     with open(temp_path, "wb") as f:
                         f.write(uploaded_file.getvalue())
                     try:
@@ -201,7 +214,7 @@ if "report_loaded" in st.session_state and st.session_state.report_loaded:
             st.info("Click the button above to define all terms found in this report.")
 
 else:
-    st.info("👋 **Welcome to Medical Report Hub.** Please upload your laboratory results (PDF) to begin.")
+    st.info("👋 **Welcome to Medical Report Hub.** Please upload your laboratory results (PDF or Image) to begin.")
 
 # Footer
 st.markdown("---")

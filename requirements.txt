@@ -10,3 +10,5 @@ tiktoken
 pandas
 numpy
 reportlab
+Pillow
+langchain-huggingface
